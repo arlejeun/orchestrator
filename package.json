@@ -29,6 +29,7 @@
     "@mdi/font": "6.9.96",
     "@rushstack/eslint-patch": "1.1.4",
     "@types/node": "16.11.56",
+    "@types/gravatar":"^1.8.3",
     "@vitejs/plugin-vue": "2.3.4",
     "@vue/eslint-config-prettier": "7.0.0",
     "@vue/eslint-config-typescript": "10.0.0",

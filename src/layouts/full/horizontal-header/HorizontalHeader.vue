@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, toRefs } from "vue";
 import { useCustomizerStore } from "../../../stores/customizer";
 import { message, notification, profile } from "../vertical-header/data";
 import LogoLight from "../logo/LogoLight.vue";
 import LogoDark from "../logo/LogoDark.vue";
+import { useAuthenticator } from '@aws-amplify/ui-vue';
+import { getAvatarUrl } from '@/utils/image';
+
+const avatarUrl = ref('')
+avatarUrl.value = getAvatarUrl('lejeune.arnaud@gmail.com')
+const auth = useAuthenticator();
+const { route, user: amplifyUser, signOut } = toRefs(useAuthenticator());
 
 const customizer = useCustomizerStore();
 const showSearch = ref(false);
@@ -96,12 +103,20 @@ function searchbox() {
         >
           <template v-slot:prepend>
             <v-avatar size="50">
+              
               <v-img
+                :src="`${avatarUrl}`"
+                :alt="item.image"
+                width="50"
+              ></v-img
+            >
+               <!-- <v-img
                 :src="`/assets/images/users/${item.image}`"
                 :alt="item.image"
                 width="50"
               ></v-img
-            ></v-avatar>
+            >-->
+          </v-avatar>
           </template>
         </v-list-item>
         <v-btn variant="flat" color="primary" class="mt-4" block>See all Messages</v-btn>

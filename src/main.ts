@@ -14,6 +14,9 @@ import VueFeather from "vue-feather";
 import AmplifyVue from '@aws-amplify/ui-vue';
 //Amplify.configure(awsExports);
 import "@aws-amplify/ui-vue/styles.css";
+import { Amplify } from 'aws-amplify';
+import awsExports from './aws-exports';
+Amplify.configure(awsExports);
 
 const app = createApp(App);
 app.component(VueFeather.name, VueFeather);

@@ -57,23 +57,23 @@ const notification = [
 ];
 
 const profile = [
+  // {
+  //   color: "error",
+  //   icon: "dollar-sign",
+  //   title: "My Profile",
+  //   desc: "Account Settings",
+  // },
   {
-    color: "error",
-    icon: "dollar-sign",
-    title: "My Profile",
-    desc: "Account Settings",
-  },
-  {
-    color: "success",
+    color: "secondary",
     icon: "shield",
-    title: "My Inbox",
-    desc: "Messages & Emails",
+    title: "Preferences",
+    desc: "Display, colors",
   },
   {
     color: "secondary",
-    icon: "credit-card",
-    title: "My Tasks",
-    desc: "To-do and Daily Tasks",
+    icon: "settings",
+    title: "My settings",
+    desc: "Settings",
   },
 ];
 

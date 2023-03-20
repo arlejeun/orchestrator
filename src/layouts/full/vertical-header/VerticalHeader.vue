@@ -1,11 +1,20 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, ref, toRefs, watch } from "vue";
 import { useCustomizerStore } from "../../../stores/customizer";
 import { message, notification, profile } from "./data";
 import LogoLight from "../logo/LogoLight.vue";
 import LogoDark from "../logo/LogoDark.vue";
-const customizer = useCustomizerStore();
 
+import { useAuthenticator } from '@aws-amplify/ui-vue';
+import { getAvatarUrl } from '@/utils/image';
+
+const avatarUrl = ref('')
+avatarUrl.value = getAvatarUrl('lejeune.arnaud@gmail.com')
+const auth = useAuthenticator();
+const { route, user: amplifyUser, signOut } = toRefs(useAuthenticator());
+
+
+const customizer = useCustomizerStore();
 const showSearch = ref(false);
 const href = ref(undefined);
 const messages = ref(message);
@@ -14,6 +23,11 @@ const userprofile = ref(profile);
 const priority = ref(customizer.setHorizontalLayout ? 0 : 0);
 function searchbox() {
   showSearch.value = !showSearch.value;
+}
+async function mockSignOut() {
+  auth.signOut()
+  //router.push('/')
+  //instance.logoutRedirect();
 }
 const appBarOrder = computed(() => {
   return customizer.topbarOrder ? -1: 0
@@ -91,7 +105,7 @@ watch(priority, (newPriority) => {
     <!-- ---------------------------------------------- -->
     <!-- Messages -->
     <!-- ---------------------------------------------- -->
-    <v-menu anchor="bottom end" origin="auto" max-width="300">
+    <!-- <v-menu anchor="bottom end" origin="auto" max-width="300">
       <template v-slot:activator="{ props }">
         <v-btn color="inherit" icon v-bind="props">
           <v-badge color="secondary" dot>
@@ -128,12 +142,12 @@ watch(priority, (newPriority) => {
         </v-list-item>
         <v-btn variant="flat" color="primary" class="mt-4" block>See all Messages</v-btn>
       </v-list>
-    </v-menu>
+    </v-menu> -->
 
     <!-- ---------------------------------------------- -->
     <!-- Notification -->
     <!-- ---------------------------------------------- -->
-    <v-menu anchor="bottom end" origin="auto">
+    <!-- <v-menu anchor="bottom end" origin="auto">
       <template v-slot:activator="{ props }">
         <v-btn color="inherit" icon v-bind="props">
           <v-badge color="primary" dot>
@@ -167,7 +181,7 @@ watch(priority, (newPriority) => {
           >See all Notifications</v-btn
         >
       </v-list>
-    </v-menu>
+    </v-menu> -->
 
     <!-- ---------------------------------------------- -->
     <!-- User Profile -->
@@ -182,15 +196,17 @@ watch(priority, (newPriority) => {
           plain
           :ripple="false"
         >
-          <v-avatar size="35">
-            <img src="@/assets/images/users/user2.jpg" alt="Julia" />
+          <v-avatar>
+            <!-- <img src="@/assets/images/users/user1.jpg" alt="Julia" /> -->
+            <img :src="`${avatarUrl}`" alt="User Profile" width="40"/>
           </v-avatar>
         </v-btn>
       </template>
 
       <v-list class="pa-6" elevation="10" rounded="lg">
         <h4 class="font-weight-medium fs-18">User Profile</h4>
-        <div class="d-flex align-center my-4">
+        <!-- <div class="d-flex align-center my-4">
+
           <img
             src="@/assets/images/users/user2.jpg"
             alt="Julia"
@@ -211,7 +227,7 @@ watch(priority, (newPriority) => {
               >
             </div>
           </div>
-        </div>
+        </div> -->
         <v-list-item
           class="pa-3 mb-2"
           v-for="(item, i) in userprofile"
@@ -237,12 +253,20 @@ watch(priority, (newPriority) => {
             </v-list-item-avatar>
           </template>
         </v-list-item>
-        <v-btn
+        <!-- <v-btn
           block
           color="secondary"
           to="/authentication/boxedlogin"
           variant="flat"
           class="mt-4 py-4"
+          >Logout</v-btn
+        > -->
+        <v-btn
+          block
+          color="secondary"
+          variant="flat"
+          class="mt-4 py-4"
+          @click.stop.prevent="mockSignOut"
           >Logout</v-btn
         >
       </v-list>

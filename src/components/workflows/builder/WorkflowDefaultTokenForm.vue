@@ -35,6 +35,13 @@ const onClick = () => {
     <v-card-text>
       <v-text-field
         :loading="loading"
+        label="Organization Name"
+        filled
+        background-color="transparent"
+        @click:append-inner="onClick"
+      ></v-text-field>
+      <v-text-field
+        :loading="loading"
         label="Secret ID"
         append-inner-icon="mdi-lock-outline"
         filled

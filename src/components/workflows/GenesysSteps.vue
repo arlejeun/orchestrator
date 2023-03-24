@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import GenesysStepsSettings from '@/components/workflows/GenesysStepSettings.vue'
 
 const tab = ref(null);
@@ -28,17 +28,58 @@ const messages = [
   },
 ]
 
-const outcomeScore = ref(65)
-const slider4 = ref(50)
+const isOpportunity = ref(false)
+const slider1 = ref(50)
+const slider2 = ref(50)
+const slider3 = ref(50)
 const satisfactionEmojis = ref(['😭', '😢', '☹️', '🙁', '😐', '🙂', '😊', '😁', '😄', '😍'])
+
+const color1 = computed(() => {
+  if (slider1.value < 20) return 'red'
+  if (slider1.value < 40) return 'orange'
+  if (slider1.value < 60) return 'indigo'
+  if (slider1.value < 80) return 'teal'
+  return 'green'
+})
+
+const color2 = computed(() => {
+  if (slider2.value < 20) return 'red'
+  if (slider2.value < 40) return 'orange'
+  if (slider2.value < 60) return 'indigo'
+  if (slider2.value < 80) return 'teal'
+  return 'green'
+})
+
+const color3 = computed(() => {
+  if (slider3.value < 20) return 'red'
+  if (slider3.value < 40) return 'orange'
+  if (slider3.value < 60) return 'indigo'
+  if (slider3.value < 80) return 'teal'
+  return 'green'
+})
+
+const tickLabels = ref({
+  0: '<1k',
+  1: '<5k',
+  2: '<10k',
+  3: '+10k',
+})
+
+const increment = () => {
+
+}
+
+const decrement = () => {
+
+}
 
 </script>
 
 <template>
   <!-- ----------------------------------------------------------------------------- -->
-<!-- Align -->
-<!-- ----------------------------------------------------------------------------- -->
-<div>
+  <!-- Align -->
+  <!-- ----------------------------------------------------------------------------- -->
+  <div>
     <p class="text-subtitle-1 text-grey-darken-1">
       You can optionally change the color of the v-system-bar by using the color
       prop.
@@ -71,10 +112,10 @@ const satisfactionEmojis = ref(['😭', '😢', '☹️', '🙁', '😐', '🙂'
 
         <v-window v-model="tab">
           <!-- <v-window-item v-for="item in items" :key="item" :value="item">
-                          <v-card flat>
-                            <v-card-text v-text="text"></v-card-text>
-                          </v-card>
-                        </v-window-item> -->
+                              <v-card flat>
+                                <v-card-text v-text="text"></v-card-text>
+                              </v-card>
+                            </v-window-item> -->
 
           <v-window-item value="Settings">
             <v-card flat>
@@ -132,9 +173,16 @@ const satisfactionEmojis = ref(['😭', '😢', '☹️', '🙁', '😐', '🙂'
                                   <label>Score</label>
                                 </v-col>
                                 <v-col cols="12" sm="7">
-                                  <v-slider v-model="slider4" thumb-label="always">
-                                    <template v-slot:thumb-label="{ modelValue }">
-                                      {{ satisfactionEmojis[Math.min(Math.floor(modelValue / 10), 9)] }}
+                                  <v-slider v-model="slider1" thumb-label :color="color1" track-color="grey" min="0"
+                                    max="100" :step="1">
+                                    <template v-slot:prepend>
+                                      <v-btn size="small" variant="text" icon="mdi-minus" :color="color1"
+                                        @click="decrement"></v-btn>
+                                    </template>
+
+                                    <template v-slot:append>
+                                      <v-btn size="small" variant="text" icon="mdi-plus" :color="color1"
+                                        @click="increment"></v-btn>
                                     </template>
                                   </v-slider>
                                 </v-col>
@@ -162,79 +210,131 @@ const satisfactionEmojis = ref(['😭', '😢', '☹️', '🙁', '😐', '🙂'
                                 </v-col>
                               </v-row>
                               <v-row>
-                              <v-col cols="12" sm="2" class="d-flex align-center">
-                                <label>Outcome</label>
-                              </v-col>
-                              <v-col cols="12" sm="7">
-                                <v-select label="Select outcome" hide-details
-                                  :items="['Signed Purchase Order', 'Qualified Lead']"></v-select>
-                              </v-col>
-                              <v-col cols="12" sm="2" class="d-flex align-center">
-                                <!-- <label>Last Name</label> -->
-                                <v-btn size="small" icon="mdi-cached" color="info"></v-btn>
-                              </v-col>
-                            </v-row>
-                            <v-row class="pt-5">
-                              <v-col cols="12" sm="2" class="d-flex align-center">
-                                <label>Score</label>
-                              </v-col>
-                              <v-col cols="12" sm="7">
-                                <v-slider v-model="slider4" thumb-label="always">
-                                  <template v-slot:thumb-label="{ modelValue }">
-                                    {{ satisfactionEmojis[Math.min(Math.floor(modelValue / 10), 9)] }}
-                                  </template>
-                                </v-slider>
+                                <v-col cols="12" sm="2" class="d-flex align-center">
+                                  <!-- <label>Opportunity</label> -->
+                                </v-col>
+                                <v-col cols="12" sm="3" class="d-flex align-center">
+                                  <v-checkbox v-model="isOpportunity" label="Is Opportunity?"
+                                    class="d-flex align-center"></v-checkbox>
+                                </v-col>
+
+                              </v-row>
+                              <v-row v-show="isOpportunity">
+                                <v-col cols="12" sm="2" class="d-flex align-center">
+                                  <label>Deal Size</label>
+                                </v-col>
+                                <v-col cols="12" sm="7">
+                                  <v-slider v-model="slider2" :ticks="tickLabels" :max="3" step="1" show-ticks="always"
+                                    tick-size="4" track-color="grey">
+                                  </v-slider>
                               </v-col>
                             </v-row>
                           </v-col>
 
                         </v-row>
                       </v-card-text>
+
                       <v-divider></v-divider>
-                      <div class="pa-5 text-right">
-                        <v-btn color="secondary" class="text-capitalize mr-2">Save</v-btn>
-                        <v-btn color="primary" class="text-capitalize" dark>Cancel</v-btn>
-                      </div>
-                    </v-card>
-                  </v-col>
-                  <!-- <v-col>
-                <v-card>
-                          <v-img height="200" src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg" cover
-                            class="text-white">
-                              <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
-                                <template v-slot:prepend>
-                                    <v-btn icon="$menu"></v-btn>
-                                  </template>
+                      <v-card-text class="pa-5">
+                        <h3 class="title text-h6 pb-4">Marketo Profile</h3>
+                        <v-row>
+                          <v-col cols="12" lg="12">
+                            <v-row>
+                              <v-col cols="12" sm="2" class="d-flex align-center">
+                                <label>Campaign Name</label>
+                              </v-col>
+                              <v-col cols="12" sm="7">
+                                <v-select label="Pick targeted type" hide-details
+                                  :items="['N/A', 'Superbowl Ads 2023', 'Forbes Magazine March 2023', 'Tech Magazine February 2023', 'Google Ads']"></v-select>
+                              </v-col>
+                              <v-col cols="12" sm="2" class="d-flex align-center">
+                                <!-- <label>Last Name</label> -->
+                                <v-btn size="small" icon="mdi-cached" color="info"></v-btn>
+                              </v-col>
+                            </v-row>
+                            <v-row>
+                              <v-col cols="12" sm="2" class="d-flex align-center">
+                                <label>Segment</label>
+                              </v-col>
+                              <v-col cols="12" sm="7">
+                                <v-select label="Select outcome" hide-details
+                                    :items="['Interested', 'Ready to Buy', 'Existing Customer', 'Discount offer']"></v-select>
+                                </v-col>
+                                <v-col cols="12" sm="2" class="d-flex align-center">
+                                  <!-- <label>Last Name</label> -->
+                                  <v-btn size="small" icon="mdi-cached" color="info"></v-btn>
+                                </v-col>
+                              </v-row>
+                              <v-row class="pt-5">
+                                <v-col cols="12" sm="2" class="d-flex align-center">
+                                  <label>Lead Score</label>
+                                </v-col>
+                                <v-col cols="12" sm="7">
+                                  <v-slider v-model="slider3" thumb-label :color="color3" track-color="grey" min="0"
+                                    max="100" :step="1">
+                                    <template v-slot:prepend>
+                                      <v-btn size="small" variant="text" icon="mdi-minus" :color="color3"
+                                        @click="decrement"></v-btn>
+                                    </template>
 
-                                  <v-toolbar-title class="text-h6">
-                                    Messages
-                                  </v-toolbar-title>
+                                    <template v-slot:append>
+                                      <v-btn size="small" variant="text" icon="mdi-plus" :color="color3"
+                                        @click="increment"></v-btn>
+                                    </template>
+                                  </v-slider>
+                                </v-col>
+                              </v-row>
+                            </v-col>
 
-                                  <template v-slot:append>
-                                    <v-btn icon="mdi-dots-vertical"></v-btn>
-                                  </template>
-                                </v-toolbar>
-                              </v-img>
+                          </v-row>
+                        </v-card-text>
 
-                              <v-card-text>
-                                <div class="font-weight-bold ms-1 mb-2">
-                                  Today
-                                </div>
 
-                                <v-timeline density="compact" align="start">
-                                  <v-timeline-item v-for="message in messages" :key="message.time" :dot-color="message.color"
-                                    size="x-small">
-                                    <div class="mb-4">
-                                      <div class="font-weight-normal">
-                                        <strong>{{ message.from }}</strong> @{{ message.time }}
-                                      </div>
-                                      <div>{{ message.message }}</div>
+                        <v-divider></v-divider>
+                        <div class="pa-5 text-right">
+                          <v-btn color="secondary" class="text-capitalize mr-2">Save</v-btn>
+                          <v-btn color="primary" class="text-capitalize" dark>Cancel</v-btn>
+                        </div>
+                      </v-card>
+                    </v-col>
+                    <!-- <v-col>
+                    <v-card>
+                              <v-img height="200" src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg" cover
+                                class="text-white">
+                                  <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
+                                    <template v-slot:prepend>
+                                        <v-btn icon="$menu"></v-btn>
+                                      </template>
+
+                                      <v-toolbar-title class="text-h6">
+                                        Messages
+                                      </v-toolbar-title>
+
+                                      <template v-slot:append>
+                                        <v-btn icon="mdi-dots-vertical"></v-btn>
+                                      </template>
+                                    </v-toolbar>
+                                  </v-img>
+
+                                  <v-card-text>
+                                    <div class="font-weight-bold ms-1 mb-2">
+                                      Today
                                     </div>
-                                  </v-timeline-item>
-                                </v-timeline>
-                              </v-card-text>
-                            </v-card>
-                          </v-col> -->
+
+                                    <v-timeline density="compact" align="start">
+                                      <v-timeline-item v-for="message in messages" :key="message.time" :dot-color="message.color"
+                                        size="x-small">
+                                        <div class="mb-4">
+                                          <div class="font-weight-normal">
+                                            <strong>{{ message.from }}</strong> @{{ message.time }}
+                                          </div>
+                                          <div>{{ message.message }}</div>
+                                        </div>
+                                      </v-timeline-item>
+                                    </v-timeline>
+                                  </v-card-text>
+                                </v-card>
+                              </v-col> -->
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -265,10 +365,10 @@ const satisfactionEmojis = ref(['😭', '😢', '☹️', '🙁', '😐', '🙂'
                             <v-col cols="12" lg="12">
                               <v-row>
                                 <v-col cols="12" sm="2" class="d-flex align-center">
-                                  <label>Channel</label>
+                                  <v-label class="d-flex align-center">Channel</v-label>
                                 </v-col>
                                 <v-col cols="12" sm="2" class="d-flex align-center">
-                                  <v-checkbox label="Voice"></v-checkbox>
+                                  <v-checkbox label="Voice" class="d-flex align-center"></v-checkbox>
                                 </v-col>
                                 <v-col cols="12" sm="1" class="d-flex align-center">
                                   <label>Start Time</label>
@@ -291,7 +391,7 @@ const satisfactionEmojis = ref(['😭', '😢', '☹️', '🙁', '😐', '🙂'
                                   <!-- <label>Channel</label> -->
                                 </v-col>
                                 <v-col cols="12" sm="2" class="d-flex align-center">
-                                  <v-checkbox label="Messenger"></v-checkbox>
+                                  <v-checkbox label="Messenger" class="d-flex align-center"></v-checkbox>
                                 </v-col>
                                 <v-col cols="12" sm="1" class="d-flex align-center">
                                   <label>Start Time</label>
@@ -312,14 +412,14 @@ const satisfactionEmojis = ref(['😭', '😢', '☹️', '🙁', '😐', '🙂'
 
                               <v-row>
                                 <v-col cols="12" sm="2" class="d-flex align-center">
-                                  <label>Engage immediately</label>
+                                  <v-label>Web Engagement</v-label>
                                 </v-col>
-                                <v-col cols="12" sm="2" class="d-flex align-center">
-                                  <v-checkbox label="yes"></v-checkbox>
+                                <v-col cols="12" sm="3" class="d-flex align-center">
+                                  <v-checkbox label="Immediately" class="d-flex align-center"></v-checkbox>
                                 </v-col>
                                 <v-col cols="12" sm="2" class="d-flex align-center">
                                   <!-- <label>Last Name</label> -->
-                                  <v-btn size="small" icon="mdi-cached" color="info"></v-btn>
+                                  <v-checkbox label="Next visit" class="d-flex align-center"></v-checkbox>
                                 </v-col>
                               </v-row>
 
@@ -353,7 +453,8 @@ const satisfactionEmojis = ref(['😭', '😢', '☹️', '🙁', '😐', '🙂'
                       <v-card class="mb-7">
                         <v-card-text class="pa-5">
                           <h3 class="title text-h6">Internal resources</h3>
-                          <h6 class="text-subtitle-1 text-grey-darken-1">What resources do you want to engage for customer matching this specific profile.</h6>
+                          <h6 class="text-subtitle-1 text-grey-darken-1">What resources do you want to engage for customer
+                            matching this specific profile.</h6>
                         </v-card-text>
                         <v-divider></v-divider>
                         <v-card-text class="pa-5">
@@ -365,7 +466,7 @@ const satisfactionEmojis = ref(['😭', '😢', '☹️', '🙁', '😐', '🙂'
                                   <label>Web</label>
                                 </v-col>
                                 <v-col cols="12" sm="2" class="d-flex align-center">
-                                  <v-checkbox label="Content Offer"></v-checkbox>
+                                  <v-checkbox label="Popup" class="d-flex align-center"></v-checkbox>
                                 </v-col>
                                 <v-col cols="12" sm="1" class="d-flex align-center">
                                   <label>Start Time</label>
@@ -388,7 +489,7 @@ const satisfactionEmojis = ref(['😭', '😢', '☹️', '🙁', '😐', '🙂'
                                   <!-- <label>Channel</label> -->
                                 </v-col>
                                 <v-col cols="12" sm="2" class="d-flex align-center">
-                                  <v-checkbox label="Knowledge Bot"></v-checkbox>
+                                  <v-checkbox label="Chat bot" class="d-flex align-center"></v-checkbox>
                                 </v-col>
                                 <v-col cols="12" sm="1" class="d-flex align-center">
                                   <label>Start Time</label>
@@ -415,33 +516,31 @@ const satisfactionEmojis = ref(['😭', '😢', '☹️', '🙁', '😐', '🙂'
                             <v-col cols="12" lg="12">
                               <v-row>
                                 <v-col cols="12" sm="2" class="d-flex align-center">
-                                  <label>Skills requested</label>
+                                  <label>Targeted Skills</label>
                                 </v-col>
                                 <v-col cols="12" sm="2" class="d-flex align-center">
                                   <v-checkbox label="Primary skill"></v-checkbox>
                                 </v-col>
                                 <v-col cols="12" sm="6">
-                                  <v-select label="Select skill" hide-details
-                                    :items="['Sales', 'Service']"></v-select>
+                                  <v-select label="Select skill" hide-details :items="['Sales', 'Service']"></v-select>
                                 </v-col>
                               </v-row>
 
                               <v-row>
                                 <v-col cols="12" sm="2" class="d-flex align-center">
-                                  
+
                                 </v-col>
                                 <v-col cols="12" sm="2" class="d-flex align-center">
                                   <v-checkbox label="Secondary skill"></v-checkbox>
                                 </v-col>
                                 <v-col cols="12" sm="6">
-                                  <v-select label="Select skill" hide-details
-                                    :items="['English', 'French']"></v-select>
+                                  <v-select label="Select skill" hide-details :items="['English', 'French']"></v-select>
                                 </v-col>
                               </v-row>
-                              </v-col>
-                            </v-row>
+                            </v-col>
+                          </v-row>
 
-                              
+
                         </v-card-text>
 
                         <div class="pa-5 text-right">

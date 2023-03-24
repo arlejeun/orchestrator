@@ -21,7 +21,7 @@ const sidebarItem: menu[] = [
     to: "/sources",
   },  
   {
-    title: "Integrations",
+    title: "Migrations",
     icon: "package",
     to: "/integrations",
   },  

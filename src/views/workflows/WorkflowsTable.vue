@@ -168,7 +168,6 @@ const breadcrumbs = ref([
           <v-table class="mt-5">
             <thead>
               <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Steps</th>
                 <th>Updated</th>
@@ -178,7 +177,6 @@ const breadcrumbs = ref([
             </thead>
             <tbody>
               <tr v-for="item in filteredList" :key="item.id">
-                <td>{{ item.id }}</td>
                 <td>
                   <div class="d-flex align-center py-4">
                     <div>
@@ -193,9 +191,11 @@ const breadcrumbs = ref([
                 </td>
                 <td>
                   <!-- {{ item.steps }} -->
-                  <v-avatar v-for="step in item.steps">
-                    <v-img :src="`${step.imageUrl}`"></v-img>
-                  </v-avatar>
+                  <div>
+                    <v-avatar v-for="step in item.steps">
+                      <v-img :src="`${step.imageUrl}`"></v-img>
+                    </v-avatar>
+                  </div>
                   <!-- 
                     <v-avatar>
                       <v-img :src="`/assets/images/apps/aws_lambda_logo.png`"></v-img></v-avatar>

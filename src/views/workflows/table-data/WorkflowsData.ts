@@ -1,6 +1,6 @@
 export default [
   {
-    id: "1sww23",
+    id: "Notify-Slack-News-Channel",
     name: "Notify Slack News channel",
     ownerName: "alejeune",
     inactive: false,
@@ -39,8 +39,8 @@ export default [
     ]
   },
   {
-    id: "ads2w4",
-    name: "Notify Slack News channel dfjkshesf hcelfdhelwkf ewhslhdfsj cdghs gydsgfvdf",
+    id: "inside-sales-manager-gm-financials",
+    name: "Inside Sales Manager GM Financials",
     ownerName: "alejeune",
     inactive: false,
     latestDeployment: {

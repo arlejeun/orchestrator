@@ -18,7 +18,7 @@ export const useCustomizerStore = defineStore({
     Customizer_drawer: false,
     SidebarColor: "white", //Change Sidebar Color || 'white', | "#2b2b2b" | "rgb(44, 59, 164)" | "rgb(96, 44, 164)" | "rgb(151, 210, 219)" | "rgb(77, 86, 100)"
     mini_sidebar: false,
-    navbarColor: "rgb(18,29,146)",    setHorizontalLayout: false, // Horizontal layout
+    navbarColor: "rgb(33, 193, 214)",    setHorizontalLayout: false, // Horizontal layout
     darktheme: false,
     topbarOrder: false
   }),

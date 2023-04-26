@@ -6,9 +6,29 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: "/workflows",
+      redirect: "/starter",
       component: () => import("@/layouts/full/FullLayout.vue"),
       children: [
+        {
+          name: "Welcome",
+          path: "/starter",
+          component: () => import("@/views/StarterPage.vue")
+        },
+        {
+          name: "Pick Metric",
+          path: "/metrics",
+          component: () => import("@/views/StarterMetrics.vue")
+        },
+        {
+          name: "Pick Tools",
+          path: "/tools",
+          component: () => import("@/views/StarterTools.vue")
+        },
+        {
+          name: "My Library",
+          path: "/library",
+          component: () => import("@/views/StarterLibrary.vue")
+        },
         {
           name: "Workflows",
           path: "/workflows",

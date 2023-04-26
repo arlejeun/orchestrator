@@ -21,6 +21,14 @@ const userprofile = ref(profile);
 function searchbox() {
   showSearch.value = !showSearch.value;
 }
+
+async function mockSignOut() {
+  auth.signOut()
+  //router.push('/')
+  //instance.logoutRedirect();
+}
+
+
 </script>
 
 <template>
@@ -51,9 +59,10 @@ function searchbox() {
     <!---Search part -->
     <!-- ---------------------------------------------- -->
 
-    <v-btn text icon color="inherit" @click="searchbox">
+    <!-- <v-btn text icon color="inherit" @click="searchbox">
       <vue-feather type="search" class="feather-sm"></vue-feather>
-    </v-btn>
+    </v-btn> -->
+    <v-label>ORCHESTRATOR</v-label>
     <v-sheet v-if="showSearch" class="searchinput pa-2" elevation="10">
       <v-text-field
         color="success"
@@ -76,7 +85,7 @@ function searchbox() {
     <!-- ---------------------------------------------- -->
     <!-- Messages -->
     <!-- ---------------------------------------------- -->
-    <v-menu anchor="bottom end" origin="auto" max-width="300">
+    <!-- <v-menu anchor="bottom end" origin="auto" max-width="300">
       <template v-slot:activator="{ props }">
         <v-btn color="inherit" icon v-bind="props">
           <v-badge color="secondary" dot>
@@ -110,18 +119,13 @@ function searchbox() {
                 width="50"
               ></v-img
             >
-               <!-- <v-img
-                :src="`/assets/images/users/${item.image}`"
-                :alt="item.image"
-                width="50"
-              ></v-img
-            >-->
+           
           </v-avatar>
           </template>
         </v-list-item>
         <v-btn variant="flat" color="primary" class="mt-4" block>See all Messages</v-btn>
       </v-list>
-    </v-menu>
+    </v-menu> -->
 
     <!-- ---------------------------------------------- -->
     <!-- Notification -->
@@ -176,7 +180,8 @@ function searchbox() {
           :ripple="false"
         >
           <v-avatar size="35">
-            <img src="@/assets/images/users/user2.jpg" alt="Julia" />
+            <!-- <img src="@/assets/images/users/user2.jpg" alt="Julia" /> -->
+            <img :src="`${avatarUrl}`" alt="User Profile" width="40"/>
           </v-avatar>
         </v-btn>
       </template>
@@ -184,14 +189,15 @@ function searchbox() {
       <v-list class="pa-6" elevation="10" rounded="lg">
         <h4 class="font-weight-medium fs-18">User Profile</h4>
         <div class="d-flex align-center my-4">
-          <img
+          <img :src="`${avatarUrl}`" alt="User Profile" width="40"/>
+          <!-- <img
             src="@/assets/images/users/user2.jpg"
             alt="Julia"
             class="rounded-circle"
-            width="90"
-          />
+            width="40"
+          /> -->
           <div class="ml-4">
-            <h4 class="font-weight-medium fs-18">Julia Roberts</h4>
+            <h4 class="font-weight-medium fs-18">Dan Arra</h4>
             <span class="subtitle-2 font-weight-light">Administrator</span>
             <div class="d-flex align-center">
               <vue-feather
@@ -200,7 +206,7 @@ function searchbox() {
                 class="d-flex grey--text"
               ></vue-feather>
               <span class="subtitle-2 font-weight-light ml-1"
-                >info@flexy.com</span
+                >info@sabohc.com</span
               >
             </div>
           </div>
@@ -233,7 +239,7 @@ function searchbox() {
         <v-btn
           block
           color="secondary"
-          href="/authentication/boxedlogin"
+          @click.stop.prevent="mockSignOut"
           variant="flat"
           class="mt-4 py-4"
           >Logout</v-btn
